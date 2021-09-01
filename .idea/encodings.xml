@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-16" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/conf/Config.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/Assert.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/Consts.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/ExcelHandler.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/Log.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/Shell.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/new_tool_a.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/operate_json.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/operate_sql_al.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/util/req_reload.py" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
