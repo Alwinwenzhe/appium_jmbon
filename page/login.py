@@ -6,36 +6,43 @@ from selenium.webdriver.support import expected_conditions as EC
 class Login(object):
 
     def __init__(self,i):
-        bd = BaseDriver()
-        self.d = bd.android_driver(i)
+        self.d = i
 
-    def get_acount_pwd(self):
-        '''从快捷登录中获取账号密码登录对象'''
-        return self.d.find_element_by_id('com.jmbon.android:id/text_use_other')
+    def click_acount_pwd(self):
+        '''从快捷登录中点击账号密码登录'''
+        self.d.find_element_by_id('com.jmbon.android:id/text_use_other').click()
 
-    def get_username_e(self,value):
+
+    def send_username_e(self,mobile):
         '''获取输入手机号框'''
-        return self.d.find_element_by_id('com.jmbon.android:id/edit_phone')
+        mob = self.d.find_element_by_id('com.jmbon.android:id/edit_phone')
+        mob.send_keys(mobile)
 
-    def get_passwd_e(self):
-        '''获取密码框'''
-        return  self.d.find_element_by_id('com.jmbon.android:id/edit_passwd')
+    def send_passwd_e(self,pwd):
+        '''输入密码'''
+        passwd = self.d.find_element_by_id('com.jmbon.android:id/edit_passwd')
+        passwd.clear()
+        passwd.send_keys(pwd)
 
-    def get_check_passwd_e(self):
-        '''获取可视密码对象'''
-        return self.d.find_element_by_id('com.jmbon.android:id/image_see_pass')
+    def click_check_passwd_e(self):
+        '''点击可视密码对象'''
+        self.d.find_element_by_id('com.jmbon.android:id/image_see_pass').click()
 
-    def get_login_button_e(self):
-        '''获取登录按钮对象'''
-        return self.d.find_element_by_id('com.jmbon.android:id/sb_login')
+    def click_login_button_e(self):
+        '''点击登录按钮对象'''
+        self.d.find_element_by_id('com.jmbon.android:id/sb_login').click()
 
-    def get_forget_pwd(self):
-        '''获取忘记密码对象'''
-        return self.d.find_element_by_id('com.jmbon.android:id/text_retrieve_password')
+    def click_forget_pwd(self):
+        '''点击忘记密码对象'''
+        self.d.find_element_by_id('com.jmbon.android:id/text_retrieve_password').click()
 
-    def get_treaty(self):
-        '''获取同意协议按钮'''
-        return self.d.find_element_by_id("com.jmbon.android:id/check_view")
+    def click_treaty(self):
+        '''点击同意协议按钮'''
+        self.d.find_element_by_id("com.jmbon.android:id/check_view").click()
+
+    def get_pwd_error(self):
+        '''返回账号或密码错误提示的文本信息'''
+        return self.d.find_element_by_id('com.jmbon.android:id/textPassError').text
 
 
     def get_toast(self,error_mess):

@@ -17,7 +17,8 @@ class CaseTest(ParameTestCase):
     @classmethod
     def setUpClass(cls):
         '''appium服务调用'''
-        cls.l = Login_business(ParameTestCase.parames)
+        cls.d = BaseDriver().android_driver(ParameTestCase.parames)
+        cls.l = Login_business(cls.d)
         print('setupclass中的参数：',ParameTestCase.parames)
 
     @classmethod
@@ -36,8 +37,10 @@ class CaseTest(ParameTestCase):
 
     def test_01(self):
         '''登录用例判定运行结果'''
-        print("testcase里面的参数：",ParameTestCase.parames)
-        self.assertTrue(self.l.login())
+        print("testcase里面的参数：",self.d)
+        result = self.l.login()
+        self.assertTrue(result)
+        time.sleep(6)
 
 
 def appium_init():

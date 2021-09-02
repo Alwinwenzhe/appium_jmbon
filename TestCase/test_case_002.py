@@ -17,9 +17,6 @@ class CaseTest002(ParameTestCase):
     @classmethod
     def setUpClass(cls):
         '''appium服务调用'''
-        cls.bd =BaseDriver()
-        cls.driver = cls.bd.android_driver(ParameTestCase.parames)
-        cls.l = Login_business(ParameTestCase.parames)
         print('setupclass中的参数：',ParameTestCase.parames)
 
     @classmethod
@@ -29,7 +26,9 @@ class CaseTest002(ParameTestCase):
 
     def setUp(self):
         '''用例环境准备'''
-
+        self.bd = BaseDriver()
+        self.driver = self.bd.android_driver(ParameTestCase.parames)
+        self.l = Login_business(self.driver)
         print("setup里面的参数i ：", ParameTestCase.parames)
         print('准备用例执行前的工作，如：回到首页等')
 
@@ -40,7 +39,7 @@ class CaseTest002(ParameTestCase):
     def test_01(self):
         '''登录用例判定运行结果'''
         print("testcase里面的参数：",ParameTestCase.parames)
-        # self.assertTrue(self.l.login())
+        self.assertTrue(self.l.login())
 
 
 def appium_init():
@@ -64,10 +63,10 @@ def get_suite(i):
     #     HTMLTestRunner.HTMLTestRunner(file_object).run(suit)
 
 if __name__ == '__main__':
-    # appium_init()
+    appium_init()
     threads = []
-    # for i in range(get_user_info()):
-    for i in range(1):
+    for i in range(get_user_info()):
+    # for i in range(1):
         # print('start:',i)
         t = multiprocessing.Process(target=get_suite, args=(i,))
         threads.append(t)

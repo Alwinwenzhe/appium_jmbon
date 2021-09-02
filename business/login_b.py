@@ -1,25 +1,26 @@
 # -*- coding:UTF-8 -*-
-from page_handle.login_h import LoginH
-from page_handle.home_h import HomeH
+from page.login import Login
+from page.home import Home
 from time import sleep
 
 
 class Login_business(object):
 
     def __init__(self,i):
-        self.l = LoginH(i)
-        self.h = HomeH(i)
+        self.l = Login(i)
+        self.h = Home(i)
 
     def login(self):
         '''登录操作'''
-        sleep(20)
-        self.h.click_mine()
-        self.l.click_account_pwd()
-        self.l.input_username('18888886140')
-        self.l.input_pwd('jmbon888889')
-        self.l.check_treaty()
-        self.l.click_login_button()
-        sleep(6)
-        if self.l.get_toast("账号或密码错误,请检查后重新输入"):
+        self.h.click_mine_e()
+        self.l.click_acount_pwd()
+        self.l.send_username_e('18888886140')
+        self.l.send_passwd_e('jmbon888889')
+        self.l.click_treaty()
+        self.l.click_login_button_e()
+        sleep(2)
+        if self.l.get_pwd_error() == '账号或密码错误':
             return True
+        else:
+            return False
 
