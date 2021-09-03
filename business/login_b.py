@@ -10,7 +10,7 @@ class Login_business(object):
         self.l = Login(i)
         self.h = Home(i)
 
-    def login(self):
+    def login_error(self):
         '''登录操作'''
         self.h.click_mine_e()
         self.l.click_acount_pwd()

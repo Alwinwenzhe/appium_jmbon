@@ -1,5 +1,5 @@
 # -*- coding:UTF-8 -*-
-import unittest,HTMLTestRunner, multiprocessing, time
+import unittest,HTMLTestRunner, multiprocessing, time, os
 from business.login_b import Login_business
 from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
@@ -23,7 +23,8 @@ class CaseTest(ParameTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''整个环境清理'''
+        '''整个环境清理,关闭app'''
+        cls.d.close_app()
         print('清理掉所有环境信息，如：断开数据库连接等')
 
     def setUp(self):
@@ -38,7 +39,7 @@ class CaseTest(ParameTestCase):
     def test_01(self):
         '''登录用例判定运行结果'''
         print("testcase里面的参数：",self.d)
-        result = self.l.login()
+        result = self.l.login_error()
         self.assertTrue(result)
         time.sleep(6)
 
@@ -58,10 +59,13 @@ def get_suite(i):
     print("get_suite里面的：",i)
     suite = unittest.TestSuite()
     suite.addTest(CaseTest("test_01", param=i))
-    unittest.TextTestRunner().run(suite)
-    # report_path = '..\\reprot\\test_report.htlm'
-    # with open(report_path, 'wb') as file_object:        # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
-    #     HTMLTestRunner.HTMLTestRunner(file_object).run(suit)
+    # unittest.TextTestRunner().run(suite)
+    # 获取路径，有异常
+    # project_dir = os.path.abspath(os.path.dirname(__file__))
+    # report_path = project_dir + r'\report\test_report.html'
+    report_path=r'E:\python_code\alwin\appium_jmbon\report\test_report.html'
+    with open(report_path, 'wb') as file_object:        # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
+        HTMLTestRunner.HTMLTestRunner(file_object).run(suite)
 
 if __name__ == '__main__':
     appium_init()
