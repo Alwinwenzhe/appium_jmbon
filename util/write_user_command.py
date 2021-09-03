@@ -58,9 +58,16 @@ class WriteUserCommand(object):
 
     def get_count(self):
         '''获取数据长度'''
-        data = self.readyaml()
-        len = data.__len__()
-        return len
+        try:        # 检测可能出错的代码
+            data = self.readyaml()
+            if data == None:        # 主动出发异常
+                raise ValueError("请检查是否有手机连接".center(60,'>'))
+        except ValueError as e:
+            print(e)
+        else:           #  如果没有异常执行该代码
+            len = data.__len__()
+            return len
+
 
 
 if __name__ == '__main__':

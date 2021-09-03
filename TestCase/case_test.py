@@ -5,6 +5,7 @@ from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
 from base.base_driver import BaseDriver
 
+
 class ParameTestCase(unittest.TestCase):
     '''重写构造方法'''
     def __init__(self,methodName='runTest',param=None):
@@ -34,6 +35,7 @@ class CaseTest(ParameTestCase):
 
     def tearDown(self):
         '''用例环境清理'''
+        swtich_default_input(ParameTestCase.parames)
         print('清理用例执行后的工作')
 
     def test_01(self):
@@ -43,6 +45,25 @@ class CaseTest(ParameTestCase):
         self.assertTrue(result)
         time.sleep(6)
 
+wu = WriteUserCommand()
+
+def swtich_default_input(i):
+    '''切换回默认输入法'''
+    device_name = wu.get_yaml('user_info_{}'.format(str(i)), 'devicesname')
+    os.system('adb -s {0} shell ime set {1}'.format(device_name,filter_input()[0]))
+    time.sleep(1)
+
+def filter_input():
+    '''查询并返回输入法'''
+    input_list = []
+    result_list = os.popen('adb shell ime list -s').readlines()
+    for i in result_list:
+        if 'UnicodeI' in i:
+            pass
+        else:
+            input_list.append(i)
+    return input_list
+
 
 def appium_init():
     '''初始化appium服务'''
@@ -51,7 +72,6 @@ def appium_init():
 
 def get_user_info():
     '''获取设备数'''
-    wu =WriteUserCommand()
     user_info = wu.get_count()
     return user_info
 

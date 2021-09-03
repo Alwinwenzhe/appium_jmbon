@@ -24,6 +24,7 @@ class BaseDriver(object):
         driver.implicitly_wait(15)  # 全局设置，每个元素最长等待时间10s
         return driver
 
+
     def ios_driver(self):
         pass
 
