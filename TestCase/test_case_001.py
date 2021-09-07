@@ -13,7 +13,7 @@ class ParameTestCase(unittest.TestCase):
         ParameTestCase.parames = param
         print('重写构造方法：', ParameTestCase.parames)
 
-class CaseTest(ParameTestCase):
+class CaseTest001(ParameTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,7 +38,7 @@ class CaseTest(ParameTestCase):
         swtich_default_input(ParameTestCase.parames)
         print('清理用例执行后的工作')
 
-    def test_01(self):
+    def test_001(self):
         '''登录用例判定运行结果'''
         print("testcase里面的参数：",self.d)
         result = self.l.login_error()
@@ -78,14 +78,14 @@ def get_user_info():
 def get_suite(i):
     print("get_suite里面的：",i)
     suite = unittest.TestSuite()
-    suite.addTest(CaseTest("test_01", param=i))
+    suite.addTest(CaseTest001("test_001", param=i))
     # unittest.TextTestRunner().run(suite)
     # 获取路径，有异常
     # project_dir = os.path.abspath(os.path.dirname(__file__))
     # report_path = project_dir + r'\report\test_report.html'
     report_path=r'E:\python_code\alwin\appium_jmbon\report\test_report.html'
     with open(report_path, 'wb') as file_object:        # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
-        HTMLTestRunner.HTMLTestRunner(file_object).run(suite)
+        HTMLTestRunner.HTMLTestRunner(stream=file_object,title=u'自动化测试报告',description=u'用例执行情况:').run(suite)
 
 if __name__ == '__main__':
     appium_init()

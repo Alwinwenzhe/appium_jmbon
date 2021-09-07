@@ -1,5 +1,8 @@
 # -- coding:utf-8 --
+import time, os, random, allure
 from appium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from util.write_user_command import WriteUserCommand
 
 class BaseDriver(object):
@@ -23,7 +26,6 @@ class BaseDriver(object):
         driver = webdriver.Remote("http://127.0.0.1:{}/wd/hub".format(port), capabilities)
         driver.implicitly_wait(15)  # 全局设置，每个元素最长等待时间10s
         return driver
-
 
     def ios_driver(self):
         pass

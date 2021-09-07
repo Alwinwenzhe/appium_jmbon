@@ -1,14 +1,19 @@
 # -*- coding:utf-8 -*-
-import yaml
+import yaml, os
 
 class WriteUserCommand(object):
+
+    def __init__(self):
+        # parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))   # 返回上一级目录
+        parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # 返回上一级目录
+        self.user_info_dir = (parent_dir + '/conf/devices_port.yaml').replace('\\', '/')
 
     def readyaml(self):
         '''
         读取yaml文件
         :return:
         '''
-        with open('../conf/devices_port.yaml') as f:
+        with open(self.user_info_dir,'r') as f:
             data = yaml.load(f,Loader=yaml.FullLoader)
         return data
 
@@ -18,7 +23,7 @@ class WriteUserCommand(object):
         :return:
         '''
         data = self.join_data(i,b_port,bp_port,devices_name)
-        with open('../conf/devices_port.yaml','a') as f:        # a--追加
+        with open(self.user_info_dir,'a') as f:        # a--追加
             yaml.dump(data,f)
 
     def join_data(self,i,b_port,bp_port,devices_name):
@@ -44,7 +49,8 @@ class WriteUserCommand(object):
         运行前清理user_info
         :return:
         '''
-        with open('../conf/devices_port.yaml','w') as f:
+
+        with open(self.user_info_dir,'w') as f:
             f.truncate()
 
     def get_yaml(self,key,value):
@@ -74,4 +80,5 @@ if __name__ == '__main__':
     wu = WriteUserCommand()
     # print(wu.write_yaml(0,4700,4900,123))
     # print(wu.get_yaml('c','b'))
-    print(wu.get_count())
+    print(wu.user_info_dir)
+    # print(user_info_dir)

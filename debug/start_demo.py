@@ -4,6 +4,7 @@ from appium import webdriver
 from util.swip_screen import SwipScreen
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from time import sleep
 
 
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     ss.find_element_by_id('com.jmbon.android:id/edit_passwd').send_keys('jmbon888889')
     ss.find_element_by_id("com.jmbon.android:id/check_view").click()
     ss.find_element_by_id('com.jmbon.android:id/sb_login').click()
+    ss.find_element(By.ID,'kw')
     sleep(6)
     ss.close_app()
     # if get_toast(ss,"账号或密码错误,请检查后重新输入"):
