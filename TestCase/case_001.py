@@ -1,18 +1,15 @@
 # -*- coding:UTF-8 -*-
-import unittest,HTMLTestRunner, multiprocessing, time, os, BeautifulReport
+# Comment:多线程尝试失败，2021-09-24
+import unittest, multiprocessing, time, os, BeautifulReport
 from business.login_b import Login_business
 from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
 from base.base_driver import BaseDriver
-from parameterized import parameterized
-
-
+import parameterized
 data = [
         [19981203720, 888888, False, '账号或密码错误'],
         [15828022852, 888888, False, '账号或密码错误']
     ]
-
-wu = WriteUserCommand()
 
 class ParameTestCase(unittest.TestCase):
     '''重写构造方法'''
@@ -21,7 +18,7 @@ class ParameTestCase(unittest.TestCase):
         ParameTestCase.parames = param
         print('重写构造方法：', ParameTestCase.parames)
 
-class CaseTest001(ParameTestCase):
+class Case001(ParameTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -30,6 +27,12 @@ class CaseTest001(ParameTestCase):
         cls.l = Login_business(cls.d)
         print('setupclass中的参数：',ParameTestCase.parames)
         cls.l.to_login()
+
+    @classmethod
+    def tearDownClass(cls):
+        '''整个环境清理,关闭app'''
+        cls.d.close_app()
+        print('清理掉所有环境信息，如：断开数据库连接等')
 
     def setUp(self):
         '''用例环境准备'''
@@ -41,36 +44,22 @@ class CaseTest001(ParameTestCase):
         swtich_default_input(ParameTestCase.parames)
         print('清理用例执行后的工作')
 
-    @classmethod
-    def tearDownClass(cls):
-        '''整个环境清理,关闭app'''
-        cls.d.close_app()
-        print('清理掉所有环境信息，如：断开数据库连接等')
+    # def test_001(self):
+    #     '''登录用例判定运行结果'''
+    #     print("testcase里面的参数：",self.d)
+    #     result = self.l.login_001()
+    #     self.assertTrue(result)
+    #     time.sleep(6)
 
-    def test_001(self):
+    @parameterized.parameterized.expand(data)
+    def test_003(self, mobile, pwd, expect, expect_text):
         '''登录用例判定运行结果'''
-        print("testcase里面的参数：",self.d)
-        result = self.l.login_001()
-        self.assertTrue(result)
-        time.sleep(6)
-
-    # @parameterized.expand([
-    #     ('x', 4, 5, 9),
-    # ])
-    # def test_login(self, name, a, b, c):
-    #     # 函数在断言里面
-    #     print("test_login start: ")
-    #     self.assertEqual(a + b, c)
-    #     print('name: {0}'.format(name) + '运行成功')
-
-    @parameterized.expand(data)
-    def test_002(self, mobile, pwd, expect, expect_text):
-        '''登录用例判定运行结果'''
-        print("test_002 start: ")
         print("testcase里面的参数：", self.d)
-        result = self.l.login_002(mobile, pwd, expect, expect_text)
+        result = self.l.login_002(mobile, pwd, expect_text)
         self.assertEqual(expect, result)
         time.sleep(6)
+
+wu = WriteUserCommand()
 
 def swtich_default_input(i):
     '''切换回默认输入法'''
@@ -102,22 +91,27 @@ def get_user_info():
 def get_suite(i):
     print("get_suite里面的：",i)
     suite = unittest.TestSuite()
-    suite.addTest(CaseTest001("test_001",param=i))
-    # suite.addTest(CaseTest001("test_002", param=i))
+    # suite.addTest(CaseTest001("test_login",param=i))
+    suite.addTest(Case001("test_003",param=i))
+    # suite.addTest(CaseTest001("test_002",param=i))
     # unittest.TextTestRunner().run(suite)
     # 获取路径，有异常
     # project_dir = os.path.abspath(os.path.dirname(__file__))
     # report_path = project_dir + r'\report\test_report.html'
 
-    # 使用HTMLTestRunner
+    # 第一种使用HTMLTestRunner
     # report_path=r'E:\python_code\alwin\appium_jmbon\report\test_report.html'
     # with open(report_path, 'wb') as file_object:        # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
     #     HTMLTestRunner.HTMLTestRunner(stream=file_object,title=u'自动化测试报告',description=u'用例执行情况:',verbosity=2).run(suite)
 
-    # 使用beautifulreport
+    # 第二种使用beautifulreport
     path = r'E:\python_code\alwin\appium_jmbon\report'
     bf = BeautifulReport.BeautifulReport(suite)  # 实例化一个beatifulreport对象
+    # bf = BeautifulReport.BeautifulReport(unittest.makeSuite(CaseTest001))  #这里如果带参数会报错
     bf.report(filename='Jmbon_Android端测试报告',report_dir=path,description='Jmbon_Android端测试报告')  # 可使用log_path参数将报告存放到对应路径
+
+    # 第三运行方式
+    # unittest.main(verbosity=2)  # verbosity运行结果信息复杂度 2--详细模式；verbosity运行ok
 
 if __name__ == '__main__':
     appium_init()

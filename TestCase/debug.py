@@ -41,8 +41,3 @@ if __name__ == '__main__':
     suite = unittest.TestSuite()
     suite.addTest(TestBaidu("test_search"))
     unittest.main(verbosity=2)         # verbosity运行结果信息复杂度 2--详细模式；verbosity运行ok
-
-    # 第三：HTML运行异常
-    # report_path = r'E:\python_code\alwin\appium_jmbon\report\test_report.html'
-    # with open(report_path, 'wb') as file_object:  # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
-    #     HTMLTestRunner.HTMLTestRunner(stream=file_object, title=u'自动化测试报告', description=u'用例执行情况:').run(suite)

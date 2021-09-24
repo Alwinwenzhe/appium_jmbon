@@ -1,75 +1,75 @@
 # -*- coding:UTF-8 -*-
-import unittest,HTMLTestRunner, multiprocessing, time
+# 直接去掉多线程运行，固定在单机运行
+import unittest, time, os, BeautifulReport
 from business.login_b import Login_business
 from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
 from base.base_driver import BaseDriver
+from parameterized import parameterized
 
-class ParameTestCase(unittest.TestCase):
-    '''重写构造方法'''
-    def __init__(self,methodName='runTest',param=None):
-        super(ParameTestCase,self).__init__(methodName)
-        ParameTestCase.parames = param
-        print('重写构造方法：', ParameTestCase.parames)
 
-class CaseTest002(ParameTestCase):
+class CaseTest001(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         '''appium服务调用'''
-        print('setupclass中的参数：',ParameTestCase.parames)
+        cls.d = BaseDriver().android_driver(0)
+        cls.l = Login_business(cls.d)           # 将driver传递进去
+        cls.l.to_login()
 
     @classmethod
     def tearDownClass(cls):
-        '''整个环境清理'''
+        '''整个环境清理,关闭app'''
+        cls.d.close_app()
         print('清理掉所有环境信息，如：断开数据库连接等')
 
     def setUp(self):
         '''用例环境准备'''
-        self.bd = BaseDriver()
-        self.driver = self.bd.android_driver(ParameTestCase.parames)
-        self.l = Login_business(self.driver)
-        print("setup里面的参数i ：", ParameTestCase.parames)
         print('准备用例执行前的工作，如：回到首页等')
 
     def tearDown(self):
         '''用例环境清理'''
+        swtich_default_input(0)
         print('清理用例执行后的工作')
 
-    def test_01(self):
+    @parameterized.expand([
+        [19981203720, 88888888, False, '账号或密码错误'],
+        [15828022852, 88888888, False, '账号或密码错误']
+    ])
+    def test_003(self, mobile, pwd, expect, expect_text):
         '''登录用例判定运行结果'''
-        print("testcase里面的参数：",ParameTestCase.parames)
-        self.assertTrue(self.l.login())
+        print("testcase里面的参数：", self.d)
+        result = self.l.login_002(mobile, pwd, expect_text)
+        self.assertEqual(expect, result)
+        time.sleep(6)
 
+wu = WriteUserCommand()
+
+def swtich_default_input(i):
+    '''切换回默认输入法'''
+    device_name = wu.get_yaml('user_info_{}'.format(str(i)), 'devicesname')
+    os.system('adb -s {0} shell ime set {1}'.format(device_name,filter_input()[0]))
+    time.sleep(1)
+
+def filter_input():
+    '''查询并返回输入法'''
+    input_list = []
+    result_list = os.popen('adb shell ime list -s').readlines()
+    for i in result_list:
+        if 'UnicodeI' in i:
+            pass
+        else:
+            input_list.append(i)
+    return input_list
 
 def appium_init():
     '''初始化appium服务'''
     server = Serverv()
     server.start_appium_server_thread()
 
-def get_user_info():
-    '''获取设备数'''
-    wu =WriteUserCommand()
-    user_info = wu.get_count()
-    return user_info
-
-def get_suite(i):
-    print("get_suite里面的：",i)
-    suite = unittest.TestSuite()
-    suite.addTest(CaseTest002("test_01", param=i))
-    unittest.TextTestRunner().run(suite)
-    # report_path = '..\\reprot\\test_report.htlm'
-    # with open(report_path, 'wb') as file_object:        # 表示以二进制写方式打开，只能写文件， 如果文件不存在，创建该文件
-    #     HTMLTestRunner.HTMLTestRunner(file_object).run(suit)
-
 if __name__ == '__main__':
     appium_init()
-    threads = []
-    for i in range(get_user_info()):
-    # for i in range(1):
-        # print('start:',i)
-        t = multiprocessing.Process(target=get_suite, args=(i,))
-        threads.append(t)
-    for j in threads:
-        j.start()
-        time.sleep(1)
+    path = r'E:\python_code\alwin\appium_jmbon\report'
+    bf = BeautifulReport.BeautifulReport(unittest.makeSuite(CaseTest001))  # 这里如果带参数会报错
+    bf.report(filename='Jmbon_Android端测试报告', report_dir=path,
+              description='Jmbon_Android端测试报告')  # 可使用log_path参数将报告存放到对应路径

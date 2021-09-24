@@ -1,15 +1,14 @@
 # coding=utf-8
 import random
 import allure
-import pymysql
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from util.Log import MyLog
+from base.base_driver import BaseDriver
 import os
 
 log = MyLog()
-
 
 class Base(object):
 
