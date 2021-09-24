@@ -15,17 +15,18 @@ class Login_business(object):
         self.h.click_mine_e()
         self.l.click_acount_pwd()
 
-    def login_001(self):
-        '''登录操作'''
-        self.l.send_username_e('18888886140')
-        self.l.send_passwd_e('jmbon888889')
+    def login_001(self,mobile,code,expect_text):
+        '''快捷登录'''
+        self.h.click_mine_e()
+        self.l.send_shotcut_username_e(mobile)
         self.l.click_treaty()
-        self.l.click_login_button_e()
-        sleep(2)
-        if self.l.get_pwd_error() == '账号或密码错误':
+        self.l.click_shotcut_verifycode()
+        self.l.input_verify_code(code)
+        if self.l.get_toast(expect_text):
             return True
         else:
             return False
+
 
     def login_002(self, mobile, pwd, expcet_text):
         '''登录操作'''
@@ -35,7 +36,7 @@ class Login_business(object):
         self.l.click_login_button_e()
         sleep(2)
         if self.l.get_pwd_error() == expcet_text:
-            return True
-        else:
             return False
+        else:
+            return True
 

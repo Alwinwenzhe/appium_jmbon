@@ -9,11 +9,31 @@ class Login(object):
     def __init__(self,i):
         self.d = i
 
+    # 001 快捷登录
     def click_acount_pwd(self):
         '''从快捷登录中点击账号密码登录'''
         self.d.find_element_by_id('com.jmbon.android:id/text_use_other').click()        # 还原为旧得运行方式
         # self.d.click_element((By.ID, 'com.jmbon.android:id/text_use_other'))
 
+    def send_shotcut_username_e(self,mobile):
+        '''快捷登录种，手机号输入'''
+        mob = self.d.find_element_by_id('com.jmbon.android:id/edit_phone')
+        mob.clear()
+        mob.send_keys(mobile)
+
+    def click_shotcut_verifycode(self):
+        '''快捷登录中，点击获取验证码'''
+        self.d.find_element_by_id("com.jmbon.android:id/sb_get_captcha").click()
+
+    def input_verify_code(self,code):
+        '''
+        输入6位验证码
+        错误提示：手机验证码错误
+        :return:
+        '''
+        self.d.find_element_by_id('com.jmbon.android:id/splitEditText').send_keys(code)
+
+    # 002账号密码登录界面
     def send_username_e(self,mobile):
         '''获取输入手机号框'''
         mob = self.d.find_element_by_id('com.jmbon.android:id/edit_phone')              # 还原为旧得运行方式

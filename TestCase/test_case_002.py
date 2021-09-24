@@ -13,32 +13,51 @@ class CaseTest001(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''appium服务调用'''
-        cls.d = BaseDriver().android_driver(0)
-        cls.l = Login_business(cls.d)           # 将driver传递进去
-        cls.l.to_login()
+        # cls.d = BaseDriver().android_driver(0)
+        # cls.l = Login_business(cls.d)           # 将driver传递进去
+        # cls.l.to_login()
 
     @classmethod
     def tearDownClass(cls):
         '''整个环境清理,关闭app'''
-        cls.d.close_app()
+        # cls.d.close_app()
         print('清理掉所有环境信息，如：断开数据库连接等')
 
     def setUp(self):
         '''用例环境准备'''
         print('准备用例执行前的工作，如：回到首页等')
+        self.d = BaseDriver().android_driver(0)
+        self.l = Login_business(self.d)  # 将driver传递进去
+
 
     def tearDown(self):
         '''用例环境清理'''
         swtich_default_input(0)
+        self.d.close_app()
         print('清理用例执行后的工作')
+
+    @parameterized.expand([
+        [19981203720,123456,'手机验证码错误']
+    ])
+    def test_001(self,mobile,verify_code,expect):
+        '''
+
+        :param mobile:
+        :param verify_code:
+        :return:
+        '''
+
+        result = self.l.login_001(mobile,verify_code,expect)
+        self.assertTrue(result)
 
     @parameterized.expand([
         [19981203720, 88888888, False, '账号或密码错误'],
         [15828022852, 88888888, False, '账号或密码错误']
     ])
-    def test_003(self, mobile, pwd, expect, expect_text):
-        '''登录用例判定运行结果'''
+    def test_002(self, mobile, pwd, expect, expect_text):
+        '''账号密码登录'''
         print("testcase里面的参数：", self.d)
+        self.l.to_login()
         result = self.l.login_002(mobile, pwd, expect_text)
         self.assertEqual(expect, result)
         time.sleep(6)
