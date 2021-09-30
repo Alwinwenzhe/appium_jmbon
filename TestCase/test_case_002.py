@@ -52,7 +52,8 @@ class CaseTest001(unittest.TestCase):
 
     @parameterized.expand([
         [19981203720, 88888888, False, '账号或密码错误'],
-        [15828022852, 88888888, False, '账号或密码错误']
+        [15828022852, 88888888, False, '账号或密码错误'],
+        [15828022852, 12345678, True, '欢迎回来']
     ])
     def test_002(self, mobile, pwd, expect, expect_text):
         '''账号密码登录'''

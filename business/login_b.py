@@ -27,7 +27,6 @@ class Login_business(object):
         else:
             return False
 
-
     def login_002(self, mobile, pwd, expcet_text):
         '''登录操作'''
         self.l.send_username_e(mobile)
@@ -35,8 +34,16 @@ class Login_business(object):
         self.l.click_treaty()
         self.l.click_login_button_e()
         sleep(2)
-        if self.l.get_pwd_error() == expcet_text:
-            return False
+        if expcet_text == '欢迎回来':
+            welcome = self.l.get_toast(expcet_text)
+            if welcome == '欢迎回来':
+                return True
+            else:
+                return False
         else:
-            return True
+            if self.l.get_pwd_error() == expcet_text:
+                return False
+            else:
+                return True
+
 

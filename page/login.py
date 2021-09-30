@@ -36,10 +36,10 @@ class Login(object):
     # 002账号密码登录界面
     def send_username_e(self,mobile):
         '''获取输入手机号框'''
-        mob = self.d.find_element_by_id('com.jmbon.android:id/edit_phone')              # 还原为旧得运行方式
-        mob.clear()
-        mob.send_keys(mobile)
-        # self.d.input_text((By.ID, 'com.jmbon.android:id/edit_phone'),mobile)
+        # mob = self.d.find_element_by_id('com.jmbon.android:id/edit_phone')              # 还原为旧得运行方式
+        # mob.clear()
+        # mob.send_keys(mobile)
+        self.d.input_text((By.ID, 'com.jmbon.android:id/edit_phone'),mobile)
 
     def send_passwd_e(self,pwd):
         '''输入密码'''
