@@ -5,6 +5,7 @@ from business.login_b import Login_business
 from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
 from base.base_driver import BaseDriver
+from base.base import Base
 from parameterized import parameterized
 
 
@@ -26,14 +27,15 @@ class CaseTest001(unittest.TestCase):
     def setUp(self):
         '''用例环境准备'''
         print('准备用例执行前的工作，如：回到首页等')
-        self.d = BaseDriver().android_driver(0)
-        self.l = Login_business(self.d)  # 将driver传递进去
+        self.b = BaseDriver().android_driver(0)
+        self.d = Base(self.b)
+        self.l = Login_business()  # 将driver传递进去
 
 
     def tearDown(self):
         '''用例环境清理'''
         swtich_default_input(0)
-        self.d.close_app()
+        self.b.close_app()
         print('清理用例执行后的工作')
 
     @parameterized.expand([

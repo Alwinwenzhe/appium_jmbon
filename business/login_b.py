@@ -6,9 +6,9 @@ from time import sleep
 
 class Login_business(object):
 
-    def __init__(self,i):
-        self.l = Login(i)
-        self.h = Home(i)
+    def __init__(self):
+        self.l = Login()
+        self.h = Home()
 
     def to_login(self):
         '''去登录界面'''
