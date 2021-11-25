@@ -16,3 +16,4 @@ class Home(object):
         '''
         self.d.find_element_by_id('com.jmbon.android:id/rb_mine').click()   # 还原为旧得运行方式
         # self.d.click_element((By.ID, 'com.jmbon.android:id/rb_mine'))
+

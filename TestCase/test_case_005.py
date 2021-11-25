@@ -1,9 +1,8 @@
 # -*- coding:UTF-8 -*-
 # 直接去掉多线程运行，固定在单机运行
-# TIME: 2021-11-14
+# TIME: 2021-11-18
 # STAUS: PASS
-#COMMENT: 代码需要调整，现在是直接启动三次，然后执行测试
-#  x修改了setupclass，吃了烧烤回来继续尝试
+#COMMENT:
 import unittest, time, os, BeautifulReport
 from business.login_b import Login_business
 # from business.home_b import HomeH
@@ -11,11 +10,12 @@ from business.circle_chat_b import CircleChatB
 from util.serverr import Serverv
 from util.write_user_command import WriteUserCommand
 from base.base_driver import BaseDriver
-from base.base import Base
+from page.home import Home
+from page.mine import Mine
 from parameterized import parameterized
+from time import sleep
 
-
-class CaseTest001(unittest.TestCase):
+class CaseTest005(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -23,7 +23,12 @@ class CaseTest001(unittest.TestCase):
         cls.d = BaseDriver().android_driver(0)
         cls.l = Login_business(cls.d)           # 将driver传递进去
         cls.cc = CircleChatB(cls.d)
-        # cls.h = HomeH(cls.d)
+        cls.h = Home(cls.d)
+        cls.m = Mine(cls.d)
+        sleep(1)
+        cls.h.click_mine_e()
+        sleep(4)
+        cls.m.click_view_circle_one()
 
     def setUp(self):
         '''用例环境准备'''
@@ -35,43 +40,28 @@ class CaseTest001(unittest.TestCase):
 
     def tearDown(self):
         '''用例环境清理'''
-        swtich_default_input(0)
-        self.d.close_app()
         print('清理用例执行后的工作')
 
     @classmethod
     def tearDownClass(cls):
         '''整个环境清理,关闭app'''
         # cls.d.close_app()
+        swtich_default_input(0)
+        cls.d.close_app()
         print('清理掉所有环境信息，如：断开数据库连接等')
 
-    # @parameterized.expand([
-    #     [19981203720,123456,'手机验证码错误']
-    # ])
-    # def test_001(self,mobile,verify_code,expect):
-    #     '''
-    #
-    #     :param mobile:
-    #     :param verify_code:
-    #     :return:
-    #     '''
-    #
-    #     result = self.l.login_001(mobile,verify_code,expect)
-    #     self.assertTrue(result)
-
-    # 这个用例是可以执行的
+    # 敏感词测试
     @parameterized.expand([
-        [19981203720, 88888888, False, '账号或密码错误'],
-        [15828022852, 88888888, False, '账号或密码错误'],
-        [15828022852, 12345678, True, '欢迎回来']
+        ['爱液'],
+        ['按摩棒']
     ])
-    def test_002_login(self, mobile, pwd, expect, expect_text):
-        '''账号密码登录'''
-        print("testcase里面的参数：", self.d)
-        self.l.to_login()
-        result = self.l.login_002(mobile, pwd, expect_text)         # 登录控件识别有问题
-        self.assertEqual(expect, result)
-        time.sleep(6)
+    def test_001(self, cont):
+        ''''''
+        sleep(3)
+        result = self.cc.enter_circle_susceptible_chat_and_return(cont)
+        self.assertTrue(result)
+        time.sleep(1)
+
 
 wu = WriteUserCommand()
 
@@ -100,6 +90,6 @@ def appium_init():
 if __name__ == '__main__':
     appium_init()
     path = r'E:\python_code\alwin\appium_jmbon\report'
-    bf = BeautifulReport.BeautifulReport(unittest.makeSuite(CaseTest001))  # 这里如果带参数会报错
+    bf = BeautifulReport.BeautifulReport(unittest.makeSuite(CaseTest005))  # 这里如果带参数会报错
     bf.report(filename='Jmbon_Android端测试报告', report_dir=path,
               description='Jmbon_Android端测试报告')  # 可使用log_path参数将报告存放到对应路径

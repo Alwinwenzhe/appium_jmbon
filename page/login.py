@@ -3,11 +3,17 @@ from base.base_driver import BaseDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from time import sleep
 
 class Login(object):
 
     def __init__(self,i):
         self.d = i
+
+    def click_login(self):
+        '''点击：登录/注册'''
+        self.d.find_element_by_id('com.jmbon.android:id/toUserPage').click()
+        sleep(1)
 
     # 001 快捷登录
     def click_acount_pwd(self):

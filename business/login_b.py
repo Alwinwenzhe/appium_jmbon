@@ -6,13 +6,14 @@ from time import sleep
 
 class Login_business(object):
 
-    def __init__(self):
-        self.l = Login()
-        self.h = Home()
+    def __init__(self,i):
+        self.l = Login(i)
+        self.h = Home(i)
 
     def to_login(self):
         '''去登录界面'''
         self.h.click_mine_e()
+        self.l.click_login()
         self.l.click_acount_pwd()
 
     def login_001(self,mobile,code,expect_text):
@@ -45,5 +46,12 @@ class Login_business(object):
                 return False
             else:
                 return True
+
+    def access_circle(self):
+        '''通过我的--最近浏览--进入圈子聊天'''
+        self.h.click_mine_e()
+        sleep(1)
+        self.h.click_view_circle_one()
+        sleep(3)
 
 
